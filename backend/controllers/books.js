@@ -1,13 +1,13 @@
 const jwt = require('jsonwebtoken')
-const notesRouter = require('express').Router()
-const Note = require('../models/note')
+const booksRouter = require('express').Router()
+const Book = require('../models/book')
 const User = require('../models/user')
 
-notesRouter.get('/', async (request, response) => {
-  const notes = await Note
-    .find({}).populate('user', { username: 1, name: 1 })
+booksRouter.get('/', async (request, response) => {
+  const books = await Book
+    .find({}).populate('users', { username: 1, name: 1 })
 
-  response.json(notes.map(note => note.toJSON()))
+  response.json(books.map(book => book.toJSON()))
 })
 
 const getTokenFrom = request => {
@@ -18,7 +18,7 @@ const getTokenFrom = request => {
   return null
 }
 
-notesRouter.post('/', async (request, response) => {
+booksRouter.post('/', async (request, response) => {
   const body = request.body
   const token = getTokenFrom(request)
   const decodedToken = jwt.verify(token, process.env.SECRET)
@@ -27,46 +27,46 @@ notesRouter.post('/', async (request, response) => {
   }
   const user = await User.findById(decodedToken.id)
 
-  const note = new Note({
+  const book = new Book({
     content: body.content,
     important: body.important === undefined ? false : body.important,
     date: new Date(),
     user: user._id
   })
 
-  const savedNote = await note.save()
-  user.notes = user.notes.concat(savedNote._id)
+  const savedBook = await book.save()
+  user.books = user.books.concat(savedBook._id)
   await user.save()
 
-  response.json(savedNote.toJSON())
+  response.json(savedBook.toJSON())
 })
-notesRouter.get('/:id', async (request, response) => {
-  const note = await Note.findById(request.params.id)
-  if (note) {
-    response.json(note.toJSON())
+booksRouter.get('/:id', async (request, response) => {
+  const book = await Book.findById(request.params.id)
+  if (book) {
+    response.json(book.toJSON())
   } else {
     response.status(404).end()
   }
 })
 
-notesRouter.delete('/:id', async (request, response) => {
-  await Note.findByIdAndRemove(request.params.id)
+booksRouter.delete('/:id', async (request, response) => {
+  await Book.findByIdAndRemove(request.params.id)
   response.status(204).end()
 })
 
-notesRouter.put('/:id', (request, response, next) => {
+booksRouter.put('/:id', (request, response, next) => {
   const body = request.body
 
-  const note = {
+  const book = {
     content: body.content,
     important: body.important,
   }
 
-  Note.findByIdAndUpdate(request.params.id, note, { new: true })
-    .then(updatedNote => {
-      response.json(updatedNote.toJSON())
+  Book.findByIdAndUpdate(request.params.id, book, { new: true })
+    .then(updatedBook => {
+      response.json(updatedBook.toJSON())
     })
     .catch(error => next(error))
 })
 
-module.exports = notesRouter
+module.exports = booksRouter

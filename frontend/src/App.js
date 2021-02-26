@@ -29,12 +29,17 @@ const App = () => {
       })
   }, [])
 
-  useEffect(() => {
+  useEffect(async () => {
     const loggedUserJSON = window.localStorage.getItem('loggedBookappUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
-      setUser(user)
-      ratingService.setToken(user.token)
+      if (await loginService.validToken(user.token)) {
+        setUser(user)
+        ratingService.setToken(user.token)
+      } else {
+        setUser(null)
+        ratingService.setToken(null)
+      }
     }
   }, [])
 

@@ -6,4 +6,9 @@ const login = async credentials => {
   return response.data
 }
 
-export default { login }
+const validToken = async (token) => {
+  const response = await axios.post(`${baseUrl}/validToken`, { 'token': token })
+  return response.data.validToken
+}
+
+export default { login, validToken }

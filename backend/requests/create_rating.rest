@@ -3,6 +3,7 @@ Content-Type: application/json
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFsZSIsImlkIjoiNjAzODNhNDA0YTExYmU4YjNkYTQ0OGNhIiwiaWF0IjoxNjE0Mjk3NzAzfQ.9Yg2ybsTw5Jp9QpAhH9RvEJIM8Q9Y_ORaTfqDslnuhA
 
 {
-    "content": "Token provided",
-    "important": true
+    "rating": 3,
+    "book": true,
+    "user": true
 }

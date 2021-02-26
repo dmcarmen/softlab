@@ -7,8 +7,6 @@ import Togglable from './components/Togglable'
 import Footer from './components/Footer'
 import bookService from './services/books'
 import loginService from './services/login'
-import ratingsService from './services/ratings'
-
 
 const App = () => {
   const [books, setBooks] = useState([])
@@ -67,9 +65,9 @@ const App = () => {
       })
   }
 
-  const booksToShow = showAll
+  /*const booksToShow = showAll
     ? books
-    : books.filter(book => book.important)
+    : books.filter(book => book.important)*/
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -136,31 +134,15 @@ const App = () => {
       </div>
 
       <ul>
-        {booksToShow.map(book => {
-          <li>
-            <Book
-              key={book.id}
-              book={book}
-              toggleImportance={() => toggleImportanceOf(book.id)}
-            />
-            
-            <form onSubmit={(rate)=>{
-               ratingsService.create({id: book.id,rating: rate});
-            }}>
-              <label>
-                Rate the book:
-                <select value={rate} onChange={handleRateChange}>
-                  <option value={1}>1</option>
-                  <option value={2}>2</option>
-                  <option value={3}>3</option>
-                  <option value={4}>4</option>
-                  <option value={5}>5</option>
-                </select>
-              </label>
-            <input type="submit" value="Submit" />
-            </form>
-          </li>
-        })}
+        {books.map(book =>
+          <Book
+            key={book.id}
+            book={book}
+            toggleImportance={() => toggleImportanceOf(book.id)}
+            handle = {handleRateChange}
+            rate={rate}
+          />
+        )}
       </ul>
       <Footer />
     </div>

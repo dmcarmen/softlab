@@ -1,53 +1,56 @@
 import React, { useState, useEffect, useRef } from 'react'
-import Note from './components/Note'
+import Book from './components/Book'
 import Notification from './components/Notification'
 import LoginForm from './components/LoginForm'
-import NoteForm from './components/NoteForm'
+import BookForm from './components/BookForm'
 import Togglable from './components/Togglable'
 import Footer from './components/Footer'
-import noteService from './services/notes'
+import bookService from './services/books'
 import loginService from './services/login'
+import ratingsService from './services/ratings'
+
 
 const App = () => {
-  const [notes, setNotes] = useState([])
+  const [books, setBooks] = useState([])
   const [showAll, setShowAll] = useState(false)
   const [errorMessage, setErrorMessage] = useState(null)
 
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
+  const [rate, setRate] = useState(0)
 
-  const noteFormRef = useRef()
+  const bookFormRef = useRef()
 
   useEffect(() => {
-    noteService
+    bookService
       .getAll()
-      .then(initialNotes => {
-        setNotes(initialNotes)
+      .then(initialBooks => {
+        setBooks(initialBooks)
       })
   }, [])
 
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedNoteappUser')
+    const loggedUserJSON = window.localStorage.getItem('loggedBookappUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       setUser(user)
-      noteService.setToken(user.token)
+      bookService.setToken(user.token)
     }
   }, [])
 
   const toggleImportanceOf = id => {
-    const note = notes.find(n => n.id === id)
-    const changedNote = { ...note, important: !note.important }
+    const book = books.find(n => n.id === id)
+    const changedBook = { ...book, important: !book.important }
 
-    noteService
-      .update(id, changedNote)
-      .then(returnedNote => {
-        setNotes(notes.map(note => note.id !== id ? note : returnedNote))
+    bookService
+      .update(id, changedBook)
+      .then(returnedBook => {
+        setBooks(books.map(book => book.id !== id ? book : returnedBook))
       })
       .catch(() => {
         setErrorMessage(
-          `Note '${note.content}' was already removed from server`
+          `Book '${book.content}' was already removed from server`
         )
         setTimeout(() => {
           setErrorMessage(null)
@@ -55,18 +58,18 @@ const App = () => {
       })
   }
 
-  const addNote = (noteObject) => {
-    noteFormRef.current.toggleVisibility()
-    noteService
-      .create(noteObject)
-      .then(returnedNote => {
-        setNotes(notes.concat(returnedNote))
+  const addBook = (bookObject) => {
+    bookFormRef.current.toggleVisibility()
+    bookService
+      .create(bookObject)
+      .then(returnedBook => {
+        setBooks(books.concat(returnedBook))
       })
   }
 
-  const notesToShow = showAll
-    ? notes
-    : notes.filter(note => note.important)
+  const booksToShow = showAll
+    ? books
+    : books.filter(book => book.important)
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -75,9 +78,9 @@ const App = () => {
         username, password,
       })
 
-      noteService.setToken(user.token)
+      bookService.setToken(user.token)
       window.localStorage.setItem(
-        'loggedNoteappUser', JSON.stringify(user)
+        'loggedBookappUser', JSON.stringify(user)
       )
 
       setUser(user)
@@ -89,6 +92,10 @@ const App = () => {
         setErrorMessage(null)
       }, 5000)
     }
+  }
+
+  const handleRateChange = (event) => {
+    setRate(event.target.value)
   }
 
   const loginForm = () => (
@@ -103,22 +110,22 @@ const App = () => {
     </Togglable>
   )
 
-  const noteForm = () => (
-    <Togglable buttonLabel="new note" ref={noteFormRef}>
-      <NoteForm createNote={addNote} />
+  const bookForm = () => (
+    <Togglable buttonLabel="new book" ref={bookFormRef}>
+      <BookForm createBook={addBook} />
     </Togglable>
   )
 
   return (
     <div>
-      <h1>Notes</h1>
+      <h1>Books</h1>
       <Notification message={errorMessage} />
 
       {user === null ?
         loginForm() :
         <div>
-          <p>{user.name} logged in</p>
-          {noteForm()}
+          <p>Username : {user.name} </p>
+          {bookForm()}
         </div>
       }
 
@@ -127,16 +134,34 @@ const App = () => {
           show {showAll ? 'important' : 'all' }
         </button>
       </div>
-      <ul>
-        {notesToShow.map(note =>
-          <Note
-            key={note.id}
-            note={note}
-            toggleImportance={() => toggleImportanceOf(note.id)}
-          />
-        )}
-      </ul>
 
+      <ul>
+        {booksToShow.map(book => {
+          <li>
+            <Book
+              key={book.id}
+              book={book}
+              toggleImportance={() => toggleImportanceOf(book.id)}
+            />
+            
+            <form onSubmit={(rate)=>{
+               ratingsService.create({id: book.id,rating: rate});
+            }}>
+              <label>
+                Rate the book:
+                <select value={rate} onChange={handleRateChange}>
+                  <option value={1}>1</option>
+                  <option value={2}>2</option>
+                  <option value={3}>3</option>
+                  <option value={4}>4</option>
+                  <option value={5}>5</option>
+                </select>
+              </label>
+            <input type="submit" value="Submit" />
+            </form>
+          </li>
+        })}
+      </ul>
       <Footer />
     </div>
   )

@@ -9,7 +9,8 @@
     "test": "cross-env NODE_ENV=test jest --verbose --runInBand",
     "lint": "eslint .",
     "start:test": "cross-env NODE_ENV=test node index.js",
-    "build:ui": "rm -rf build && cd ../frontend/ && npm run build --prod && cp -r build ../backend"
+    "build:ui": "rm -rf build && cd ../frontend/ && npm run build --prod && cp -r build ../backend && cd ../backend",
+    "buildW:ui": "Remove-Item -Recurse -Force build && cd ../frontend/ && npm run build --prod && cp -r build ../backend && cd ../backend"
   },
   "author": "",
   "license": "ISC",

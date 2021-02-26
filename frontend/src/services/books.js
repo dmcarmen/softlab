@@ -6,6 +6,12 @@ const getAll = () => {
   return request.then(response => response.data)
 }
 
+const getBook = (id) => {
+  const reqString = `${baseUrl}/${id}`
+  const request = axios.get(reqString)
+  return request.then(response => response.data)
+}
+
 const create = async newObject => {
   const response = await axios.post(baseUrl, newObject)
   return response.data

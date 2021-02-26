@@ -15,9 +15,14 @@ const create = async newObject => {
   const config = {
     headers: { Authorization: token },
   }
+  try{
+    const response = await axios.post(baseUrl, newObject, config)
+    return response.data
+  }catch(error){
+    console.log(error.response.data.error)
+    return(error.response.data.error)
+  }
 
-  const response = await axios.post(baseUrl, newObject, config)
-  return response.data
 }
 
 const update = (id, newObject) => {

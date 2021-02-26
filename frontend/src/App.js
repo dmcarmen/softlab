@@ -5,6 +5,7 @@ import LoginForm from './components/LoginForm'
 import BookForm from './components/BookForm'
 import Togglable from './components/Togglable'
 import Footer from './components/Footer'
+import Logout from './components/Logout'
 import bookService from './services/books'
 import loginService from './services/login'
 import ratingService from './services/ratings'
@@ -16,8 +17,7 @@ const App = () => {
 
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [user, setUser] = useState({ 'user': null, 'token': null })
-  const [rate, setRate] = useState(0)
+  const [user, setUser] = useState(null)
 
   const bookFormRef = useRef()
 
@@ -74,7 +74,7 @@ const App = () => {
     event.preventDefault()
     try {
       const user = await loginService.login({
-        username, password,
+        username, password
       })
 
       ratingService.setToken(user.token)
@@ -83,18 +83,22 @@ const App = () => {
       )
 
       setUser(user)
+      console.log(user)
       setUsername('')
       setPassword('')
     } catch (exception) {
       setErrorMessage('wrong credentials')
+      console.log(user)
       setTimeout(() => {
         setErrorMessage(null)
       }, 5000)
     }
   }
 
-  const handleRateChange = (event) => {
-    setRate(event.target.value)
+  const handleLogout = () => {
+    setUser(null)
+    ratingService.setToken(null)
+    window.localStorage.removeItem('loggedBookappUser')
   }
 
   const loginForm = () => (
@@ -117,13 +121,14 @@ const App = () => {
 
   return (
     <div>
-      <h1>Books</h1>
+      <h1>Bookers</h1>
       <Notification message={errorMessage} />
 
       {user === null ?
         loginForm() :
         <div>
           <p>Username : {user.name} </p>
+          <Logout handleLogout={handleLogout} />
           {bookForm()}
         </div>
       }
@@ -140,8 +145,8 @@ const App = () => {
             key={book.id}
             book={book}
             toggleImportance={() => toggleImportanceOf(book.id)}
-            handle = {handleRateChange}
-            rate={rate}
+            logout={handleLogout}
+            setErrorMessage={setErrorMessage}
           />
         )}
       </ul>

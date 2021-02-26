@@ -10,7 +10,7 @@ const Footer = () => {
   return (
     <div style={footerStyle}>
       <br />
-      <em>Bookers</em>
+      <em>Alejandro Bravo y Carmen Diaz :)</em>
     </div>
   )
 }

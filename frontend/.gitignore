@@ -23,5 +23,8 @@ yarn-debug.log*
 yarn-error.log*
 
 .eslintcache
-.eslintrc.js
+eslintrc.js
+
+
+
 db.json

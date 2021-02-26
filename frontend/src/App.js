@@ -94,7 +94,6 @@ const App = () => {
   }
 
   const handleRateChange = (event) => {
-    event.preventDefault()
     setRate(event.target.value)
   }
 

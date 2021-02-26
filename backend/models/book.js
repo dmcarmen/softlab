@@ -1,5 +1,11 @@
 const mongoose = require('mongoose')
 
+const avg = (ratings) => {
+  const rats = ratings.map(r => r.rating)
+  const sum = rats.reduce((ini, curr) => ini + curr, 0)
+  return((sum / rats.length) || 0)
+}
+
 const bookSchema = new mongoose.Schema({
   name: { type: String, required: true, minlength: 5 },
   author: { type: String, required: true },
@@ -15,6 +21,8 @@ const bookSchema = new mongoose.Schema({
 bookSchema.set('toJSON', {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString()
+    returnedObject.numRatings = returnedObject.ratings.length
+    returnedObject.rating = avg(returnedObject.ratings)
     delete returnedObject._id
     delete returnedObject.__v
   }

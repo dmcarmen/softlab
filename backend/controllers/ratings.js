@@ -22,6 +22,9 @@ ratingsRouter.post('/', async (request, response) => {
     return response.status(401).json({ error: 'token missing or invalid' })
   }
   const user = await User.findById(decodedToken.id)
+  if (user === null) {
+    return response.status(401).json({ error: 'no user for this token' })
+  }
   const book = await Book.findById(body.BookId)
 
   const rating = new Rating({

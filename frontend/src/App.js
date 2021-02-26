@@ -7,6 +7,7 @@ import Togglable from './components/Togglable'
 import Footer from './components/Footer'
 import bookService from './services/books'
 import loginService from './services/login'
+import ratingService from './services/ratings'
 
 const App = () => {
   const [books, setBooks] = useState([])
@@ -15,7 +16,7 @@ const App = () => {
 
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [user, setUser] = useState(null)
+  const [user, setUser] = useState({ 'user': null, 'token': null })
   const [rate, setRate] = useState(0)
 
   const bookFormRef = useRef()
@@ -33,7 +34,7 @@ const App = () => {
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       setUser(user)
-      bookService.setToken(user.token)
+      ratingService.setToken(user.token)
     }
   }, [])
 
@@ -76,7 +77,7 @@ const App = () => {
         username, password,
       })
 
-      bookService.setToken(user.token)
+      ratingService.setToken(user.token)
       window.localStorage.setItem(
         'loggedBookappUser', JSON.stringify(user)
       )
@@ -93,6 +94,7 @@ const App = () => {
   }
 
   const handleRateChange = (event) => {
+    event.preventDefault()
     setRate(event.target.value)
   }
 

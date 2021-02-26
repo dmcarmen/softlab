@@ -18,7 +18,7 @@ const Book = ({ book, toggleImportance, handle, rate }) => {
 
       <p>
         <form onSubmit={() => {
-          ratingsService.create({ id: book.id, rating: rate })
+          ratingsService.create({ BookId: book.id, rating: rate })
         }}>
           <label>
             Rate the book:

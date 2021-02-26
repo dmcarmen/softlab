@@ -4,10 +4,10 @@ const bookSchema = new mongoose.Schema({
   name: { type: String, required: true, minlength: 5 },
   author: { type: String, required: true },
   year: Date,
-  users: [
+  ratings: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User'
+      ref: 'Rating'
     }
   ]
 })

@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const uniqueValidator = require('mongoose-unique-validator')
 
 const ratingSchema = new mongoose.Schema({
   rating: { type: Number, required: true },
@@ -13,6 +14,10 @@ const ratingSchema = new mongoose.Schema({
     required: true
   }
 })
+
+ratingSchema.index({ user: 1, book: 1 }, { unique: true })
+
+ratingSchema.plugin(uniqueValidator)
 
 ratingSchema.set('toJSON', {
   transform: (document, returnedObject) => {

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import ratingsService from '../services/ratings'
-//import booksService from '../services/books'
+import ratingService from '../services/ratings'
+import bookService from '../services/books'
 
 
 const Book = ({ book, toggleImportance , logout, setErrorMessage, setBooks, books }) => {
@@ -17,7 +17,7 @@ const Book = ({ book, toggleImportance , logout, setErrorMessage, setBooks, book
   const onSubmitRate = async (event) => {
     event.preventDefault()
     setRate(1)
-    const response = await ratingsService.create({ BookId: book.id, rating: rate })
+    const response = await ratingService.create({ BookId: book.id, rating: rate })
     console.log(response)
     if(response === 'token expired'){
       setErrorMessage('Session expired')
@@ -26,10 +26,13 @@ const Book = ({ book, toggleImportance , logout, setErrorMessage, setBooks, book
       }, 5000)
       logout()
     } else {
-      /*TODO: fix this no idea why it doesnt work
-      const bookDB = booksService.getBook(book.id)
-      const booksCopy = books.map(b => { return b.id === book.id ? bookDB : b })
-      setBooks(booksCopy)*/
+      bookService.getAll().then(initialBooks => {
+        setBooks(initialBooks)
+      })
+      /*TODO: fix this, rating goes to zero, getting all books it works
+      const bookDB = await bookService.getBook(book.id)
+      setBooks(books.map(b => { return b.id === book.id ? bookDB : b }))
+      */
     }
   }
 

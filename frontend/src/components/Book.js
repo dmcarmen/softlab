@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
 import ratingsService from '../services/ratings'
+//import booksService from '../services/books'
 
-const Book = ({ book, toggleImportance , logout, setErrorMessage }) => {
+
+const Book = ({ book, toggleImportance , logout, setErrorMessage, setBooks, books }) => {
 
   const [rate, setRate] = useState(1)
 
@@ -10,6 +12,25 @@ const Book = ({ book, toggleImportance , logout, setErrorMessage }) => {
 
   const handleRateChange = (event) => {
     setRate(event.target.value)
+  }
+
+  const onSubmitRate = async (event) => {
+    event.preventDefault()
+    setRate(1)
+    const response = await ratingsService.create({ BookId: book.id, rating: rate })
+    console.log(response)
+    if(response === 'token expired'){
+      setErrorMessage('Session expired')
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+      logout()
+    } else {
+      /*TODO: fix this no idea why it doesnt work
+      const bookDB = booksService.getBook(book.id)
+      const booksCopy = books.map(b => { return b.id === book.id ? bookDB : b })
+      setBooks(booksCopy)*/
+    }
   }
 
   return (
@@ -24,20 +45,7 @@ const Book = ({ book, toggleImportance , logout, setErrorMessage }) => {
       </p>
 
       <p>
-        <form onSubmit={ async (event) => {
-          event.preventDefault()
-          setRate(1)
-          const response = await ratingsService.create({ BookId: book.id, rating: rate })
-          console.log(response)
-          if(response === 'token expired'){
-            setErrorMessage('Session expired')
-            setTimeout(() => {
-              setErrorMessage(null)
-            }, 5000)
-            logout()
-          }
-
-        }}>
+        <form onSubmit={ onSubmitRate }>
           <label>
             Rate the book:
             <select value={rate} onChange={handleRateChange}>

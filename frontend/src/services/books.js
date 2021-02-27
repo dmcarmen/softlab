@@ -1,15 +1,16 @@
 import axios from 'axios'
 const baseUrl = '/api/books'
 
-const getAll = () => {
-  const request = axios.get(baseUrl)
-  return request.then(response => response.data)
+const getAll = async () => {
+  const response = await axios.get(baseUrl)
+  return response.data
 }
 
-const getBook = (id) => {
+const getBook = async (id) => {
   const reqString = `${baseUrl}/${id}`
-  const request = axios.get(reqString)
-  return request.then(response => response.data)
+  const response = await axios.get(reqString)
+  console.log(response.data)
+  return response.data
 }
 
 const create = async newObject => {
@@ -22,4 +23,4 @@ const update = (id, newObject) => {
   return request.then(response => response.data)
 }
 
-export default { getAll, create, update }
+export default { getAll, getBook, create, update }

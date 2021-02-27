@@ -152,6 +152,8 @@ const App = () => {
             toggleImportance={() => toggleImportanceOf(book.id)}
             logout={handleLogout}
             setErrorMessage={setErrorMessage}
+            setBooks={setBooks}
+            books={books}
           />
         )}
       </ul>

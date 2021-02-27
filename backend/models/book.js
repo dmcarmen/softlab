@@ -21,8 +21,10 @@ const bookSchema = new mongoose.Schema({
 bookSchema.set('toJSON', {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString()
-    returnedObject.numRatings = returnedObject.ratings.length
-    returnedObject.rating = avg(returnedObject.ratings)
+    if(returnedObject.ratings !== undefined){
+      returnedObject.numRatings = returnedObject.ratings.length
+      returnedObject.rating = avg(returnedObject.ratings)
+    }
     delete returnedObject._id
     delete returnedObject.__v
   }

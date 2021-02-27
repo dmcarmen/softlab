@@ -20,7 +20,6 @@ const create = async newObject => {
     const response = await axios.post(baseUrl, newObject, config)
     return response.data
   }catch(error){
-    console.log(error.response.data.error)
     return(error.response.data.error)
   }
 }

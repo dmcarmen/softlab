@@ -1,0 +1,6 @@
+POST http://localhost:3001/api/login/validToken
+Content-Type: application/json
+
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFsZSIsImlkIjoiNjAzOTRiNDQ2NGY5ZTUyODY2ODFhZGZiIiwiaWF0IjoxNjE0Mzk1NDg3LCJleHAiOjE2MTQzOTU1MDd9.1e3W6TtlzKnzanX3niPOmfDDTgDpHrZcGorvyCPPWCA"
+}

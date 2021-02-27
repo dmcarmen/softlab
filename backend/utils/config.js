@@ -8,8 +8,11 @@ const MONGODB_URI = process.env.NODE_ENV === 'test'
 
 const SECRET = process.env.SECRET
 
+const EXPIRINGTIME = 60 //TODO: if so in .env
+
 module.exports = {
   MONGODB_URI,
   PORT,
-  SECRET
+  SECRET,
+  EXPIRINGTIME
 }

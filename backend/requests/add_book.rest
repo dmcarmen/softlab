@@ -2,6 +2,6 @@ POST http://localhost:3001/api/books/ HTTP/1.1
 content-type: application/json
 
 {
-    "name": "Return to monke",
-    "author": "Alex aun mas tonto"
+    "name": "Carmen jugadora lol",
+    "author": "Carmen Furriendo"
 }

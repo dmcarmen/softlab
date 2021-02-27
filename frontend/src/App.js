@@ -5,6 +5,7 @@ import LoginForm from './components/LoginForm'
 import BookForm from './components/BookForm'
 import Togglable from './components/Togglable'
 import Footer from './components/Footer'
+import Filter from './components/Filter'
 import Logout from './components/Logout'
 import bookService from './services/books'
 import loginService from './services/login'
@@ -12,7 +13,8 @@ import ratingService from './services/ratings'
 
 const App = () => {
   const [books, setBooks] = useState([])
-  const [showAll, setShowAll] = useState(false)
+  const [filter, setFilter] = useState('')
+  const [showAll, setShowAll] = useState(true)
   const [errorMessage, setErrorMessage] = useState(null)
 
   const [username, setUsername] = useState('')
@@ -71,10 +73,6 @@ const App = () => {
       })
   }
 
-  /*const booksToShow = showAll
-    ? books
-    : books.filter(book => book.important)*/
-
   const handleLogin = async (event) => {
     event.preventDefault()
     try {
@@ -104,6 +102,10 @@ const App = () => {
     setUser(null)
     ratingService.setToken(null)
     window.localStorage.removeItem('loggedBookappUser')
+  }
+
+  const handleFilterChange = (event) => {
+    setFilter(event.target.value)
   }
 
   const loginForm = () => (
@@ -140,22 +142,36 @@ const App = () => {
 
       <div>
         <button onClick={() => setShowAll(!showAll)}>
-          show {showAll ? 'important' : 'all' }
+          show {showAll ? 'rated' : 'all' }
         </button>
       </div>
 
+      <Filter filter={filter} handler={handleFilterChange}/>
+
       <ul>
-        {books.map(book =>
-          <Book
-            key={book.id}
-            book={book}
-            toggleImportance={() => toggleImportanceOf(book.id)}
-            logout={handleLogout}
-            setErrorMessage={setErrorMessage}
-            setBooks={setBooks}
-            books={books}
-          />
-        )}
+        {books
+          .filter(book => book.name.includes(filter))
+          .filter(book => {
+            if(showAll){
+              return true
+            } else {
+              if(user !== null){
+                return  (book.ratings.find(rating => rating.user === user.id)) !== undefined ? true : false
+              }
+              return false
+            }
+          })
+          .map(book =>
+            <Book
+              key={book.id}
+              book={book}
+              toggleImportance={() => toggleImportanceOf(book.id)}
+              logout={handleLogout}
+              setErrorMessage={setErrorMessage}
+              setBooks={setBooks}
+              books={books}
+            />
+          )}
       </ul>
       <Footer />
     </div>

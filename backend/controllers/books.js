@@ -22,7 +22,7 @@ booksRouter.post('/', async (request, response) => {
 })
 
 booksRouter.get('/:id', async (request, response) => {
-  const book = await Book.findById(request.params.id)
+  const book = await Book.findById(request.params.id).populate('ratings', { rating: 1, user: 1 })
   if (book) {
     response.json(book.toJSON())
   } else {

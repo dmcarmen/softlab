@@ -18,7 +18,7 @@ const Book = ({ book, toggleImportance , logout, setErrorMessage, setBooks, book
     event.preventDefault()
     setRate(1)
     const response = await ratingService.create({ BookId: book.id, rating: rate })
-    console.log(response)
+    //console.log(response)
     if(response === 'token expired'){
       setErrorMessage('Session expired')
       setTimeout(() => {
@@ -26,13 +26,16 @@ const Book = ({ book, toggleImportance , logout, setErrorMessage, setBooks, book
       }, 5000)
       logout()
     } else {
-      bookService.getAll().then(initialBooks => {
-        setBooks(initialBooks)
+      const newBook = await bookService.getBook(book.id)
+      console.log('Libro nuevo: ' , newBook, 'Libros: ',books)
+      const newBooks = books.map(book => {
+        if(book.id === newBook.id){
+          return newBook
+        }else{
+          return book
+        }
       })
-      /*TODO: fix this, rating goes to zero, getting all books it works
-      const bookDB = await bookService.getBook(book.id)
-      setBooks(books.map(b => { return b.id === book.id ? bookDB : b }))
-      */
+      setBooks(newBooks)
     }
   }
 

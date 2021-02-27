@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import Book from './components/Book'
 import Notification from './components/Notification'
 import LoginForm from './components/LoginForm'
+import RegisterForm from './components/RegisterForm'
 import BookForm from './components/BookForm'
 import Togglable from './components/Togglable'
 import Footer from './components/Footer'
@@ -10,6 +11,7 @@ import Logout from './components/Logout'
 import bookService from './services/books'
 import loginService from './services/login'
 import ratingService from './services/ratings'
+import userService from './services/users'
 
 const App = () => {
   const [books, setBooks] = useState([])
@@ -17,8 +19,10 @@ const App = () => {
   const [showAll, setShowAll] = useState(true)
   const [errorMessage, setErrorMessage] = useState(null)
 
+  const [name, setName] = useState('')
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+
   const [user, setUser] = useState(null)
 
   const bookFormRef = useRef()
@@ -98,6 +102,35 @@ const App = () => {
     }
   }
 
+  const handleRegister = async (event) => {
+    event.preventDefault()
+    try {
+      await userService.create({ name, username, password })
+
+      const user = await loginService.login({
+        username, password
+      })
+
+      ratingService.setToken(user.token)
+      window.localStorage.setItem(
+        'loggedBookappUser', JSON.stringify(user)
+      )
+
+      setUser(user)
+      console.log(user)
+      setUsername('')
+      setPassword('')
+      setName('')
+
+    } catch (exception) {
+      setErrorMessage('something went wrong creating the user')
+      console.log(user)
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+    }
+  }
+
   const handleLogout = () => {
     setUser(null)
     ratingService.setToken(null)
@@ -109,13 +142,27 @@ const App = () => {
   }
 
   const loginForm = () => (
-    <Togglable buttonLabel="log in">
+    <Togglable buttonLabel="Log In">
       <LoginForm
         username={username}
         password={password}
         handleUsernameChange={({ target }) => setUsername(target.value)}
         handlePasswordChange={({ target }) => setPassword(target.value)}
         handleSubmit={handleLogin}
+      />
+    </Togglable>
+  )
+
+  const registerForm = () => (
+    <Togglable buttonLabel="Register">
+      <RegisterForm
+        username={username}
+        password={password}
+        name={name}
+        handleUsernameChange={({ target }) => setUsername(target.value)}
+        handlePasswordChange={({ target }) => setPassword(target.value)}
+        handleNameChange={({ target }) => setName(target.value)}
+        handleSubmit={handleRegister}
       />
     </Togglable>
   )
@@ -132,9 +179,12 @@ const App = () => {
       <Notification message={errorMessage} />
 
       {user === null ?
-        loginForm() :
         <div>
-          <p>Username : {user.name} </p>
+          {loginForm()}{registerForm()}
+        </div>
+        :
+        <div>
+          <p>Welcome {user.name}! </p>
           <Logout handleLogout={handleLogout} />
           {bookForm()}
         </div>
@@ -150,7 +200,7 @@ const App = () => {
 
       <ul>
         {books
-          .filter(book => book.name.includes(filter))
+          .filter(book => book.name.toLowerCase().includes(filter.toLowerCase()))
           .filter(book => {
             if(showAll){
               return true

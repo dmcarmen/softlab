@@ -1,6 +1,16 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
+/****
+* COMPONENT: LoginForm
+* ARGS_IN: handleSubmit: function that handles the login
+           handleUsernameChange: event handler use to update the state of the username variable
+           handlePasswordChange: event handler use to update the state of the password variable
+           username: state variable that saves the username
+           password: state variable that saves the password
+* DESCRIPTION: Component that renders login form and its handlers
+* ARGS_OUT: The html code that displays the login form
+****/
 const LoginForm = ({
   handleSubmit,
   handleUsernameChange,

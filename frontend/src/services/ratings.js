@@ -2,15 +2,22 @@ import axios from 'axios'
 const baseUrl = '/api/ratings'
 let token = null
 
+/****
+* FUNCTION: const setToken = newToken
+* ARGS_IN: newToken: new token of the user
+* DESCRIPTION: Set the new token of the session
+* ARGS_OUT: -
+****/
 const setToken = newToken => {
   token = `bearer ${newToken}`
 }
 
-const getAll = () => {
-  const request = axios.get(baseUrl)
-  return request.then(response => response.data)
-}
-
+/****
+* FUNCTION: const create = async newObject
+* ARGS_IN: newObject: rating object
+* DESCRIPTION: Create a new rating
+* ARGS_OUT: Return the new rating created or the error
+****/
 const create = async newObject => {
   const config = {
     headers: { Authorization: token },
@@ -24,9 +31,4 @@ const create = async newObject => {
   }
 }
 
-const update = (id, newObject) => {
-  const request = axios.put(`${baseUrl}/${id}`, newObject)
-  return request.then(response => response.data)
-}
-
-export default { getAll, create, update, setToken }
+export default { create, setToken }

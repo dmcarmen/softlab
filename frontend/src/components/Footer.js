@@ -1,5 +1,11 @@
 import React from 'react'
 
+/****
+* COMPONENT: Footer
+* ARGS_IN: -
+* DESCRIPTION: Component that renders the footer of the web
+* ARGS_OUT: The html code that displays the foot of the web
+****/
 const Footer = () => {
   const footerStyle = {
     color: 'green',

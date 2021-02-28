@@ -2,23 +2,41 @@ import React, { useState } from 'react'
 import ratingService from '../services/ratings'
 import bookService from '../services/books'
 
-
-const Book = ({ book, toggleImportance , logout, setErrorMessage, setBooks, books }) => {
+/****
+* COMPONENT: Book
+* ARGS_IN: book: book that renders the component
+*          logout: logout function in case tokens expire
+*          setErrorMessage: function to display messeges in the top of the screen
+*          setBooks: function to update the state of the books
+*          books: array with all the books
+* DESCRIPTION: Component that renders a book and let you submit ratings.
+* ARGS_OUT: The html code that displays the book and the rating system
+****/
+const Book = ({ book , logout, setErrorMessage, setBooks, books }) => {
 
   const [rate, setRate] = useState(1)
 
-  const label = book.important
-    ? 'make not important' : 'make important'
-
+  /****
+  * FUNCTION: const handleRateChange = (event)
+  * ARGS_IN: event: event that triggered it
+  * DESCRIPTION: Changes the value of the rate to the value of the event target
+  * ARGS_OUT: -
+  ****/
   const handleRateChange = (event) => {
     setRate(event.target.value)
   }
 
+  /****
+  * FUNCTION: const onSubmitRate = async (event)
+  * ARGS_IN: event: event that triggered it
+  * DESCRIPTION: It adds a new rating to the book. If it is added successfully it
+  *              reloads the book ratings.
+  * ARGS_OUT: -
+  ****/
   const onSubmitRate = async (event) => {
     event.preventDefault()
     setRate(1)
     const response = await ratingService.create({ BookId: book.id, rating: rate })
-    //console.log(response)
     if(response === 'token expired'){
       setErrorMessage('Session expired')
       setTimeout(() => {
@@ -46,9 +64,6 @@ const Book = ({ book, toggleImportance , logout, setErrorMessage, setBooks, book
       <p> Year of publishing: {book.year} </p>
       <p> Rating: {book.rating.toFixed(1)} </p>
       <p> Number ratings: {book.numRatings}  </p>
-      <p>
-        <button onClick={toggleImportance}>{label}</button>
-      </p>
 
       <p>
         <form onSubmit={ onSubmitRate }>

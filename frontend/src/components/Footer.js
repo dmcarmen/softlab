@@ -16,7 +16,7 @@ const Footer = () => {
   return (
     <div style={footerStyle}>
       <br />
-      <em>Alejandro Rabo y Carmen Diez :)</em>
+      <em>Alejandro Bravo y Carmen Diez </em>
     </div>
   )
 }

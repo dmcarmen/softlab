@@ -10,7 +10,7 @@ const MONGODB_URI = process.env.NODE_ENV === 'test'
 
 const SECRET = process.env.SECRET
 
-const EXPIRINGTIME = process.env.EXPIRINGTIME
+const EXPIRINGTIME = 60
 
 module.exports = {
   MONGODB_URI,

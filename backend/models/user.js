@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 const uniqueValidator = require('mongoose-unique-validator')
 
+//User schema for MongoDB
 const userSchema = mongoose.Schema({
   username: { type: String, unique: true },
   name: String,
@@ -13,8 +14,10 @@ const userSchema = mongoose.Schema({
   ],
 })
 
+//Ensures that each username is different
 userSchema.plugin(uniqueValidator)
 
+//Setting toJSON to not show _id, __v values and passwordHash
 userSchema.set('toJSON', {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString()

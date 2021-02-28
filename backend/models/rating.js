@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 const uniqueValidator = require('mongoose-unique-validator')
 
+//Rating schema for MongoDB
 const ratingSchema = new mongoose.Schema({
   rating: { type: Number, required: true },
   book: {
@@ -15,10 +16,11 @@ const ratingSchema = new mongoose.Schema({
   }
 })
 
+//Ensures that a user can only rate a book once
 ratingSchema.index({ user: 1, book: 1 }, { unique: true })
-
 ratingSchema.plugin(uniqueValidator)
 
+//Setting toJSON to not show _id and __v values
 ratingSchema.set('toJSON', {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString()

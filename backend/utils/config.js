@@ -1,6 +1,8 @@
 require('dotenv').config()
 
+//Fetching secret variables from .env file
 const PORT = process.env.PORT
+
 const MONGODB_URI = process.env.NODE_ENV === 'test'
   ? process.env.TEST_MONGODB_URI
   : process.env.MONGODB_URI
@@ -8,7 +10,7 @@ const MONGODB_URI = process.env.NODE_ENV === 'test'
 
 const SECRET = process.env.SECRET
 
-const EXPIRINGTIME = 60 //TODO: if so in .env
+const EXPIRINGTIME = process.env.EXPIRINGTIME
 
 module.exports = {
   MONGODB_URI,

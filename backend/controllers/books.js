@@ -1,6 +1,7 @@
 const booksRouter = require('express').Router()
 const Book = require('../models/book')
 
+/* GET all books route */
 booksRouter.get('/', async (request, response) => {
   const books = await Book
     .find({}).populate('ratings', { rating: 1, user: 1 })
@@ -8,19 +9,7 @@ booksRouter.get('/', async (request, response) => {
   response.json(books.map(book => book.toJSON()))
 })
 
-booksRouter.post('/', async (request, response) => {
-  const body = request.body
-
-  const book = new Book({
-    name: body.name,
-    author: body.author,
-    year: new Date() //TODO
-  })
-
-  const savedBook = await book.save()
-  response.json(savedBook.toJSON())
-})
-
+/* GET route for a specific book */
 booksRouter.get('/:id', async (request, response) => {
   const book = await Book.findById(request.params.id).populate('ratings', { rating: 1, user: 1 })
   if (book) {
@@ -30,25 +19,20 @@ booksRouter.get('/:id', async (request, response) => {
   }
 })
 
-booksRouter.delete('/:id', async (request, response) => {
-  await Book.findByIdAndRemove(request.params.id)
-  response.status(204).end()
-})
-
-booksRouter.put('/:id', (request, response, next) => {
+/* POST route to add a new book.
+ * The body must include name, author and year.
+ */
+booksRouter.post('/', async (request, response) => {
   const body = request.body
 
-  const book = {
+  const book = new Book({
     name: body.name,
     author: body.author,
-    year: new Date() //TODO
-  }
+    year: body.year
+  })
 
-  Book.findByIdAndUpdate(request.params.id, book, { new: true })
-    .then(updatedBook => {
-      response.json(updatedBook.toJSON())
-    })
-    .catch(error => next(error))
+  const savedBook = await book.save()
+  response.json(savedBook.toJSON())
 })
 
 module.exports = booksRouter

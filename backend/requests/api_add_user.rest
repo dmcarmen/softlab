@@ -1,0 +1,9 @@
+POST http://localhost:3001/APIGateway HTTP/1.1
+content-type: application/json
+
+{
+    "type": "users",
+    "username": "ff",
+    "name": "Alejandro",
+    "password": "ale"
+}

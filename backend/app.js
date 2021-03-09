@@ -13,6 +13,7 @@ const booksRouter = require('./controllers/books')
 const usersRouter = require('./controllers/users')
 const loginRouter = require('./controllers/login')
 const ratingsRouter = require('./controllers/ratings')
+const apiRouter = require('./controllers/apiGateway')
 
 //Connection to the database
 logger.info('connecting to', config.MONGODB_URI)
@@ -31,6 +32,7 @@ app.use(express.json())
 app.use(middleware.requestLogger)
 app.use(middleware.tokenExtractor)
 
+app.use('/APIGateway', apiRouter)
 app.use('/api/books', booksRouter)
 app.use('/api/users', usersRouter)
 app.use('/api/login', loginRouter)

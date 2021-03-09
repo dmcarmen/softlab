@@ -6,8 +6,9 @@ const baseBooks = 'http://localhost:3001/api/books'
 const baseUsers = 'http://localhost:3001/api/users'
 const baseRatings = 'http://localhost:3001/api/ratings'
 
-/* POST route to add a new book.
- * The body must include name, author and year.
+/* POST route that handles the client request.
+ * The body must include the type of request they want
+ * to do with the needed parameters to do it.
  */
 apiRouter.post('/', async (request, response) => {
   const body = request.body
@@ -19,7 +20,7 @@ apiRouter.post('/', async (request, response) => {
       'password': body.password,
     }
     res = await postReq(baseLogin, credentials)
-  } else if (type === 'validToken') { //TODO da false o lo otro
+  } else if (type === 'validToken') { //TODO ver bien si respuestas
     res = await postReq(`${baseLogin}/validToken`, { 'token': body.token })
   } else if (type === 'books') {
     res = await getReq(baseBooks)
@@ -34,6 +35,7 @@ apiRouter.post('/', async (request, response) => {
     }
     res = await postReq(baseUsers, data)
   } else if (type === 'ratings') {
+    //TODO coger bien el token
     const config = {
       headers: { Authorization: body.token },
     }

@@ -1,0 +1,7 @@
+POST http://localhost:3001/APIGateway HTTP/1.1
+content-type: application/json
+
+{
+    "type": "bookByID",
+    "id": "6047b8a74659d427baafb3de"
+}

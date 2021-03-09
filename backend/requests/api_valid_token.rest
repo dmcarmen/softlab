@@ -1,0 +1,7 @@
+POST http://localhost:3001/APIGateway HTTP/1.1
+content-type: application/json
+
+{
+    "type": "validToken",
+    "token": "eyJhbGiOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImZmIiwiaWQiOiI2MDQ3YmNiMDdlNDY0NjJjOWJiZDM4Y2YiLCJpYXQiOjE2MTUzMTcyNTEsImV4cCI6MTYxNTMxNzMxMX0.atsRxr3jm6UCw94fG_6NGRhjrVGkj60rehF-z4sZdU8"
+}

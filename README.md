@@ -7,8 +7,8 @@ To run the webpage (frontend and backend):
 * Create file `.env` in **/backend/** with the following information, changing `<password>` in the urls, `PORT` with the port you wish to use, `SECRET` with a secret string, and `EXPIRINGTIME` with the time that the TOKEN is valid:
 ```console
 foo@bar:~$ cat softlab/backend/.env
-MONGODB_URI='mongodb+srv://softlab:<password>@softlab.ds06f.mongodb.net/mmm?retryWrites=true&w=majority'
-TEST_MONGODB_URI='mongodb+srv://softlab:<password>@softlab.ds06f.mongodb.net/mmmtest?retryWrites=true&w=majority'
+MONGODB_URI='mongodb+srv://softlab:<password>@softlab.ds06f.mongodb.net/Bookers?retryWrites=true&w=majority'
+TEST_MONGODB_URI='mongodb+srv://softlab:<password>@softlab.ds06f.mongodb.net/Bookers_test?retryWrites=true&w=majority'
 PORT=<number>
 SECRET=<string>
 EXPIRINGTIME=<number>

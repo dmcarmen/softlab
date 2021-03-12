@@ -22,4 +22,4 @@ foo@bar:~$ cd ../backend
 foo@bar:~$ npm install
 foo@bar:~$ npm run ini
 ```
-If you are using **Windows** instead of executing `npm run ini` you have to run `npm run ini`.
+If you are using **Windows** instead of executing `npm run ini` you have to run `npm run iniW`.

@@ -1,6 +1,5 @@
 const apiRouter = require('express').Router()
 const axios = require('axios')
-var useragent = require('express-useragent');
 const baseLogin = 'http://localhost:3001/api/login'
 const baseBooks = 'http://localhost:3001/api/books'
 const baseUsers = 'http://localhost:3001/api/users'
@@ -10,7 +9,6 @@ const baseRatings = 'http://localhost:3001/api/ratings'
  * The body must include the type of request they want
  * to do with the needed parameters to do it.
  */
-
 
 var isMobile = function(userAgent) {
   let check = false;
@@ -28,7 +26,7 @@ apiRouter.post('/', async (request, response) => {
       'password': body.password,
     }
     res = await postReq(baseLogin, credentials)
-  } else if (type === 'validToken') { //TODO ver bien si respuestas
+  } else if (type === 'validToken') {
     res = await postReq(`${baseLogin}/validToken`, { 'token': body.token })
   } else if (type === 'books') {
     res = await getReq(baseBooks)

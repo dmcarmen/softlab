@@ -10,7 +10,7 @@ const User = require('../models/user')
 loginRouter.post('/', async (request, response) => {
   const body = request.body
 
-  //Finds user in the database and checks if the passwword is correct
+  //Finds user in the database and checks if the password is correct
   const user = await User.findOne({ username: body.username })
   const passwordCorrect = user === null
     ? false

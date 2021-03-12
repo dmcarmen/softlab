@@ -1,5 +1,5 @@
 import axios from 'axios'
-const baseUrl = '/api/ratings'
+const baseUrl = '/APIGateway'
 let token = null
 
 /****
@@ -19,15 +19,22 @@ const setToken = newToken => {
 * ARGS_OUT: Return the new rating created or the error
 ****/
 const create = async newObject => {
+  console.log('token: ', token)
   const config = {
     headers: { Authorization: token },
   }
 
+  //We add the type
+  newObject.type = 'ratings'
   try {
     const response = await axios.post(baseUrl, newObject, config)
     return response.data
   } catch(error) {
-    return(error.response.data.error)
+    if(error.response.data.error !== undefined){
+      return(error.response.data.error)
+    }else{
+      return(error.message)
+    }
   }
 }
 

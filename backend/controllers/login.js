@@ -39,6 +39,7 @@ loginRouter.post('/', async (request, response) => {
  * The token is sent in the body of the request.
  */
 loginRouter.post('/validToken', async (request, response) => {
+  console.log('req: ', request)
   const body = request.body
   const decodedToken = jwt.verify(body.token, config.SECRET)
   if (!body.token || !decodedToken.id) {

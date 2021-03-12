@@ -43,6 +43,11 @@ const Book = ({ book , logout, setErrorMessage, setBooks, books }) => {
         setErrorMessage(null)
       }, 5000)
       logout()
+    } else if(response === 'You can\'t rate from a mobile'){
+      setErrorMessage(response)
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
     } else {
       const newBook = await bookService.getBook(book.id)
       console.log('Libro nuevo: ' , newBook, 'Libros: ',books)
@@ -80,6 +85,7 @@ const Book = ({ book , logout, setErrorMessage, setBooks, books }) => {
           <input type="submit" value="Submit" />
         </form>
       </p>
+
     </li>
   )
 }

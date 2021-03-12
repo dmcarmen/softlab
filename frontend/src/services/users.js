@@ -1,5 +1,5 @@
 import axios from 'axios'
-const baseUrl = '/api/users'
+const baseUrl = '/APIGateway'
 
 /****
 * FUNCTION: const create = async newObject
@@ -8,6 +8,7 @@ const baseUrl = '/api/users'
 * ARGS_OUT: Return the new user created retrieved from the backends
 ****/
 const create = async newObject => {
+  newObject.type = 'users'
   const response = await axios.post(baseUrl, newObject)
   return response.data
 }

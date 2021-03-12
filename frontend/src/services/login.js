@@ -1,5 +1,5 @@
 import axios from 'axios'
-const baseUrl = '/api/login'
+const baseUrl = '/APIGateway'
 
 /****
 * FUNCTION: const login = async credentials
@@ -9,6 +9,7 @@ const baseUrl = '/api/login'
             error if the login fails
 ****/
 const login = async credentials => {
+  credentials.type = 'login'
   const response = await axios.post(baseUrl, credentials)
   return response.data
 }
@@ -21,7 +22,7 @@ const login = async credentials => {
 ****/
 const validToken = async (token) => {
   try {
-    const response = await axios.post(`${baseUrl}/validToken`, { 'token': token })
+    const response = await axios.post(`${baseUrl}`, { 'token': token , 'type': 'validToken' })
     return response.data.validToken
   } catch(error) {
     return(false)

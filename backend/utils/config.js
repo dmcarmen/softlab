@@ -12,9 +12,18 @@ const SECRET = process.env.SECRET
 
 const EXPIRINGTIME = 60
 
+const URLBOOKS = process.env.URLBOOKS
+const URLUSERS = process.env.URLUSERS
+const URLLOGIN = process.env.URLOGIN
+const URLRATINGS = process.env.URLRATINGS
+
 module.exports = {
   MONGODB_URI,
   PORT,
   SECRET,
-  EXPIRINGTIME
+  EXPIRINGTIME,
+  URLBOOKS,
+  URLUSERS,
+  URLLOGIN,
+  URLRATINGS
 }

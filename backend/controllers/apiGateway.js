@@ -1,9 +1,10 @@
+const config = require('../utils/config')
 const apiRouter = require('express').Router()
 const axios = require('axios')
-const baseLogin = 'http://localhost:3001/api/login'
-const baseBooks = 'http://localhost:3001/api/books'
-const baseUsers = 'http://localhost:3001/api/users'
-const baseRatings = 'http://localhost:3001/api/ratings'
+const baseLogin = `http://localhost:${config.PORT}${config.URLLOGIN}`
+const baseBooks = `http://localhost:${config.PORT}${config.URLBOOKS}`
+const baseUsers = `http://localhost:${config.PORT}${config.URLUSERS}`
+const baseRatings = `http://localhost:${config.PORT}${config.URLRATINGS}`
 
 
 /****

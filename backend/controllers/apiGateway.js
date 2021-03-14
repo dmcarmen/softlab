@@ -11,6 +11,7 @@ const baseRatings = `http://localhost:${config.PORT}${config.URLRATINGS}`
 * FUNCTION: var isMobile = function(userAgent)
 * ARGS_IN: userAgent: userAgent from request
 * DESCRIPTION: checks if the requests comes from a mobile phone
+*              extracted from https://stackoverflow.com/questions/11381673/detecting-a-mobile-browser
 * ARGS_OUT: boolean true if it is a mobile
 ****/
 var isMobile = function(userAgent) {
